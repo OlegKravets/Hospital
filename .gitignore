@@ -41,3 +41,4 @@ build/*
 dist/*
 src/js/config/app.templates.js
 /Hospital/.angular/cache/*
+/Hospital/dist/hospital/*

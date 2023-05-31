@@ -1,16 +1,12 @@
-using Microsoft.EntityFrameworkCore;
+using HospitalApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
-builder.Services.AddDbContext<HospitalApi.HospitalDbContext>(options =>
-{
-    string dbConnection = builder.Configuration.GetConnectionString("DbConnection");
-    options.UseSqlServer(dbConnection);
-});
-
 builder.Services.AddControllers();
+builder.Services.AddApplicationServices(builder.Configuration);
+builder.Services.AddIdentityServices(builder.Configuration);
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -30,6 +26,7 @@ app.UseCors(p => p.AllowAnyHeader()
                   .AllowAnyMethod()
                   .AllowAnyOrigin());
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
