@@ -1,22 +1,24 @@
 ﻿using HospitalApi.DTOs;
 using HospitalApi.Interfaces;
 using HospitalApi.Models;
+using HospitalApi.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace HospitalApi.Controllers
 {
     [Authorize]
-    public class AccountController : BaseApiCotroller
+    public class AccountController : BaseApiController
     {
+        private readonly UserRepository _userRepository;
         private readonly ITokenService _tokenService;
 
-        public AccountController(HospitalDbContext dbContext, ITokenService tokenService)
-            : base(dbContext)
+        public AccountController(UserRepository repository, ITokenService tokenService)
+            : base()
         {
+            _userRepository = repository;
             _tokenService = tokenService;
         }
 
@@ -38,22 +40,20 @@ namespace HospitalApi.Controllers
                 PasswordSalt = hmac.Key,
             };
 
-            DbContext.Users.Add(user);
-            await DbContext.SaveChangesAsync();
+            await _userRepository.AddUser(user);
 
             return new UserDto()
             {
-                UserName = newUser.UserName,
+                Username = newUser.UserName,
                 Token = _tokenService.CreateToken(user)
             };
         }
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<ActionResult<User>> Login(LoginDto loginModel)
+        public async Task<ActionResult<UserDto>> Login(LoginDto loginModel)
         {
-            var user = await DbContext.Users.SingleOrDefaultAsync(
-                u => u.Name == loginModel.UserName);
+            User user = await _userRepository.GetUserByUsername(loginModel.UserName);
 
             if (user is null)
             {
@@ -71,29 +71,32 @@ namespace HospitalApi.Controllers
                 }
             }
 
-            return user;
+            return new UserDto()
+            {
+                Username = user.Name,
+                Token = _tokenService.CreateToken(user)
+            };
         }
 
         [AllowAnonymous]
         [HttpPost("delete")]
         public async Task<ActionResult<bool>> Delete(string userName)
         {
-            var user = await DbContext.Users.SingleOrDefaultAsync(u => u.Name == userName);
+            User user = await _userRepository.GetUserByUsername(userName);
 
             if (user is null)
             {
                 return Unauthorized("Invalid Username");
             }
 
-            DbContext.Users.Remove(user);
-            await DbContext.SaveChangesAsync();
+            await _userRepository.RemoveUser(user.Id);
 
             return true;
         }
 
         private async Task<bool> UserExist(string userName)
         {
-            return await DbContext.Users.AnyAsync(u => u.Name.ToUpper() == userName.ToUpper());
+            return await _userRepository.IsUserExist(userName);
         }
     }
 }

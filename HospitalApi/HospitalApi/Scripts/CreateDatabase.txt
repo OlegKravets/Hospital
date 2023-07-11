@@ -1,0 +1,37 @@
+USE [Hospital]
+GO
+
+CREATE TABLE [dbo].[Users] (
+    [Id]           INT             IDENTITY (1, 1) NOT NULL,
+    [Name]         NVARCHAR (MAX)  NOT NULL,
+    [Age]          INT             NOT NULL,
+    [PasswordHash] VARBINARY (MAX) NULL,
+    [PasswordSalt] VARBINARY (MAX) NULL,
+    [Salary]       DECIMAL (18, 2) NOT NULL,
+    [HospitalId]   INT             NOT NULL
+);
+
+CREATE TABLE [dbo].[Roles] (
+    [Id]       INT            IDENTITY (1, 1) NOT NULL,
+    [RoleName] NVARCHAR (MAX) NOT NULL
+);
+
+CREATE TABLE [dbo].[UserRoles] (
+    [UserRoleId] INT IDENTITY (1, 1) NOT NULL,
+    [UserId]     INT NOT NULL,
+    [RoleId]     INT NOT NULL
+);
+
+CREATE TABLE [dbo].[Hospitals] (
+    [HospitalId]   INT            IDENTITY (1, 1) NOT NULL,
+    [HospitalName] NVARCHAR (MAX) NOT NULL,
+    [Address]      NVARCHAR (MAX) NOT NULL
+);
+
+CREATE TABLE [dbo].[Photos] (
+    [Id]       INT            IDENTITY (1, 1) NOT NULL,
+    [Url]      NVARCHAR (MAX) NOT NULL,
+    [IsMain]   BIT            NOT NULL,
+    [PublicId] NVARCHAR (MAX) NOT NULL,
+    [UserId]   INT            NOT NULL
+);

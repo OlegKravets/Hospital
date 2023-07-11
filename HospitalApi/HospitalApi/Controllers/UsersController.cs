@@ -1,32 +1,34 @@
 ﻿using HospitalApi.Models;
+using HospitalApi.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalApi.Controllers
 {
     [Authorize]
-    public class UsersController : BaseApiCotroller
+    public class UsersController : BaseApiController
     {
-        public UsersController(HospitalDbContext dbContext)
-            : base(dbContext)
+        private readonly UserRepository _userRepository;
+
+        public UsersController(UserRepository repository)
+            : base()
         {
+            _userRepository = repository;
         }
 
         [AllowAnonymous]
         [HttpGet]
-        public IActionResult GetAllUsers()
+        public async Task<IActionResult> GetAllUsers()
         {
-            var users = DbContext.Users.ToList();
+            var users = await _userRepository.GetUsers();
             return Ok(users);
         }
 
         [HttpPost]
         public async Task<IActionResult> AddUser([FromBody] User user)
         {
-            await DbContext.Users.AddAsync(user);
-            await DbContext.SaveChangesAsync();
-
-            return Ok(user);
+            await _userRepository.AddUser(user);
+            return Ok();
         }
     }
 }

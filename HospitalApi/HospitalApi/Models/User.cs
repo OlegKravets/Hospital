@@ -1,10 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace HospitalApi.Models
+﻿namespace HospitalApi.Models
 {
     public class User
     {
-        [Required]
         public int Id { get; set; }
 
         public string Name { get; set; }
@@ -16,5 +13,11 @@ namespace HospitalApi.Models
         public byte[]? PasswordSalt { get; set; }
 
         public decimal Salary { get; set; }
+
+        public int HospitalId { get; set; }
+
+        public List<UserRole> UserRoles { get; set; }
+
+        public Hospital Hospital { get; set; }
     }
 }
