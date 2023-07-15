@@ -10,6 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { DoctorsComponent } from './doctors/doctors.component';
 import { ToastrModule } from 'ngx-toastr';
+import { UsersComponent } from './users/users.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { ToastrModule } from 'ngx-toastr';
     NavigationComponent,
     HomeComponent,
     RegisterComponent,
-    DoctorsComponent
+    DoctorsComponent,
+    UsersComponent
   ],
   imports: [
     BrowserModule,

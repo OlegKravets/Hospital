@@ -2,12 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  selector: 'app-users',
+  templateUrl: './users.component.html',
+  styleUrls: ['./users.component.css']
 })
-export class HomeComponent implements OnInit {
-  registerMode = false;
+export class UsersComponent implements OnInit {
+
   users: any;
 
   constructor(private http: HttpClient) {}
@@ -16,14 +16,6 @@ export class HomeComponent implements OnInit {
     this.getUsers();
   }
 
-  registerToggle(){
-    this.registerMode = !this.registerMode;
-  }
-
-  cancelRegisterMode(event: boolean) {
-    this.registerMode = event;
-  } 
-
   getUsers()
   {
     this.http.get("https://localhost:7240/api/Users")
@@ -31,7 +23,7 @@ export class HomeComponent implements OnInit {
       {
         next: (response: any) => { this.users = response; },
         error: (error: any) => { console.log(error); },
-        complete: () => { console.log("Request is complete!"); }
+        complete: () => { console.log("Doctors are received!"); }
       });
   }
 }

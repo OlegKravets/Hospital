@@ -19,7 +19,7 @@ export class DoctorsComponent implements OnInit{
 
   getUsers()
   {
-    this.http.get("https://localhost:7240/api/Users")
+    this.http.get("https://localhost:7240/api/Users/Doctors")
     .subscribe(
       {
         next: (response: any) => { this.doctors = response; },
