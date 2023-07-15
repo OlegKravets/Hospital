@@ -50,7 +50,7 @@ try
             string exist = await connection.ExecuteScalarAsync<string>(DatabaseScripts.ExistDatabase);
             if (string.IsNullOrEmpty(exist))
             {
-                string dbCreation = File.ReadAllText(@"d:\\Oleh\\ASPNET\\HospitalApi\\HospitalApi\\Scripts\\CreateDatabase.txt");
+                string dbCreation = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), @"Scripts\CreateDatabase.txt"));
                 await connection.ExecuteAsync(dbCreation);
             }
 
