@@ -63,5 +63,13 @@ namespace HospitalApi.Repositories
                 return await connection.ExecuteAsync(query, new DynamicParameters(param));
             }
         }
+
+        protected async Task<int> InsertQuery(string query, object param = null)
+        {
+            using (IDbConnection connection = new SqlConnection(Connection.ConnectionString))
+            {
+                return await connection.QuerySingleAsync<int>(query, new DynamicParameters(param));
+            }
+        }
     }
 }

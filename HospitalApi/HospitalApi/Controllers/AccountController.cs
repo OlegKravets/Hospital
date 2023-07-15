@@ -14,13 +14,19 @@ namespace HospitalApi.Controllers
     public class AccountController : BaseApiController
     {
         private readonly UserRepository _userRepository;
+        private readonly UserRoleRepository _userRoleRepository;
         private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
 
-        public AccountController(UserRepository repository, ITokenService tokenService, IMapper mapper)
+        public AccountController(
+            UserRepository repository,
+            UserRoleRepository userRoleRepository,
+            ITokenService tokenService,
+            IMapper mapper)
             : base()
         {
             _userRepository = repository;
+            _userRoleRepository = userRoleRepository;
             _tokenService = tokenService;
             _mapper = mapper;
         }
@@ -43,7 +49,8 @@ namespace HospitalApi.Controllers
                 PasswordSalt = hmac.Key,
             };
 
-            await _userRepository.AddUser(user);
+            int addedUserId = await _userRepository.AddUser(user);
+            await _userRoleRepository.InsertUserRole(addedUserId, newUser.RoleId);
 
             var newUserDto = _mapper.Map<UserDto>(user);
             newUserDto.Token = _tokenService.CreateToken(user);

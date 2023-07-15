@@ -23,6 +23,8 @@ namespace HospitalApi.Mapper
                     cfg.PreCondition(u => u.Hospital is not null);
                     cfg.MapFrom(u => u.Hospital.Address);
                 });
+
+            CreateMap<Role, RoleDto>();
         }
     }
 }

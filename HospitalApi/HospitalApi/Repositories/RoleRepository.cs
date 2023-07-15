@@ -33,5 +33,10 @@ namespace HospitalApi.Repositories
         {
             return await GetFirstOrDefault(RoleScripts.SelectRoleByName, new { RoleNameParam, roleName });
         }
+
+        public async Task<IEnumerable<Role>> GetRoles()
+        {
+            return await GetData(RoleScripts.SelectRoles);
+        }
     }
 }

@@ -1,8 +1,6 @@
-﻿using Dapper;
-using HospitalApi.Connection;
+﻿using HospitalApi.Connection;
 using HospitalApi.Models;
 using HospitalApi.Scripts;
-using Microsoft.Data.SqlClient;
 
 namespace HospitalApi.Repositories
 {
@@ -19,9 +17,9 @@ namespace HospitalApi.Repositories
 
         protected override string AnyScript => UserScripts.AnyUser;
 
-        public async Task AddUser(User newUser)
+        public async Task<int> AddUser(User newUser)
         {
-            await ExecuteQuery(UserScripts.InsertUser, newUser);
+            return await InsertQuery(UserScripts.InsertUser, newUser);
         }
 
         public async Task AddUsers(IEnumerable<User> newUsers)
