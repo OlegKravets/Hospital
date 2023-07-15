@@ -24,13 +24,15 @@ namespace HospitalApi.Repositories
                 return false;
             }
 
-            using (IDbConnection connection = new SqlConnection(Connection.ConnectionString))
-            {
-                return await connection.ExecuteScalarAsync<bool>(AnyScript);
-            }
+            return await ExecuteScalarQuery(AnyScript);
         }
 
-        public async Task<bool> IsExist(string script, object param = null)
+        protected async Task<bool> IsExist(string script, object param = null)
+        {
+            return await ExecuteScalarQuery(script, param);
+        }
+
+        protected async Task<bool> ExecuteScalarQuery(string script, object param = null)
         {
             using (IDbConnection connection = new SqlConnection(Connection.ConnectionString))
             {
@@ -38,15 +40,15 @@ namespace HospitalApi.Repositories
             }
         }
 
-        protected async Task<IEnumerable<T>> GetData(string query)
+        protected async Task<IEnumerable<T>> GetData(string query, object param = null)
         {
             using (IDbConnection connection = new SqlConnection(Connection.ConnectionString))
             {
-                return await connection.QueryAsync<T>(query);
+                return await connection.QueryAsync<T>(query, param);
             }
         }
 
-        protected async Task<T> GetSingle(string query, object param = null)
+        protected async Task<T> GetFirstOrDefault(string query, object param = null)
         {
             using (IDbConnection connection = new SqlConnection(Connection.ConnectionString))
             {

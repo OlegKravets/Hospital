@@ -5,7 +5,6 @@ namespace HospitalApi.Models
 {
     public class Role
     {
-        [Required]
         public int Id { get; set; }
 
         public string RoleName { get; set; }

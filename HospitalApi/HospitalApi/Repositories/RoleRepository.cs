@@ -31,7 +31,7 @@ namespace HospitalApi.Repositories
 
         public async Task<Role> GetRoleByName(string roleName)
         {
-            return await GetSingle(RoleScripts.SelectRoleByName, new Dictionary<string, object>() { { RoleNameParam, roleName } });
+            return await GetFirstOrDefault(RoleScripts.SelectRoleByName, new { RoleNameParam, roleName });
         }
     }
 }

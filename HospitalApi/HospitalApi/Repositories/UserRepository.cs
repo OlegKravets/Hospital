@@ -1,20 +1,23 @@
 ﻿using Dapper;
 using HospitalApi.Connection;
-using HospitalApi.Interfaces;
 using HospitalApi.Models;
 using HospitalApi.Scripts;
+using Microsoft.Data.SqlClient;
 
 namespace HospitalApi.Repositories
 {
     public sealed class UserRepository : RepositoryBase<User>
     {
         private const string UsernameParam = "@Username";
+        private const string RoleParam = "@Role";
         private const string IdParam = "@Id";
 
         public UserRepository(HospitalConnection connection)
             : base(connection)
         {
         }
+
+        protected override string AnyScript => UserScripts.AnyUser;
 
         public async Task AddUser(User newUser)
         {
@@ -46,12 +49,17 @@ namespace HospitalApi.Repositories
 
         public async Task<User> GetUserByUsername(string userName)
         {
-            return await GetSingle(UserScripts.SelectByUsername, new Dictionary<string, object>() { { UsernameParam, userName } });
+            return await GetFirstOrDefault(UserScripts.SelectByUsername, new { UsernameParam, userName });
         }
 
         public async Task<bool> IsUserExist(string userName)
         {
-            return await IsExist(UserScripts.SelectByUsername, new Dictionary<string, object>() { { UsernameParam, userName } });
+            return await IsExist(UserScripts.SelectByUsername, new { UsernameParam, userName });
+        }
+
+        public async Task<IEnumerable<User>> GetUserByRole(string role)
+        {
+            return await GetData(UserScripts.SelectByRole, new { RoleParam, role });
         }
     }
 }

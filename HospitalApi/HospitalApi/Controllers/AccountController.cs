@@ -1,4 +1,5 @@
-﻿using HospitalApi.DTOs;
+﻿using AutoMapper;
+using HospitalApi.DTOs;
 using HospitalApi.Interfaces;
 using HospitalApi.Models;
 using HospitalApi.Repositories;
@@ -14,12 +15,14 @@ namespace HospitalApi.Controllers
     {
         private readonly UserRepository _userRepository;
         private readonly ITokenService _tokenService;
+        private readonly IMapper _mapper;
 
-        public AccountController(UserRepository repository, ITokenService tokenService)
+        public AccountController(UserRepository repository, ITokenService tokenService, IMapper mapper)
             : base()
         {
             _userRepository = repository;
             _tokenService = tokenService;
+            _mapper = mapper;
         }
 
         [AllowAnonymous]
@@ -42,11 +45,10 @@ namespace HospitalApi.Controllers
 
             await _userRepository.AddUser(user);
 
-            return new UserDto()
-            {
-                Username = newUser.UserName,
-                Token = _tokenService.CreateToken(user)
-            };
+            var newUserDto = _mapper.Map<UserDto>(user);
+            newUserDto.Token = _tokenService.CreateToken(user);
+
+            return newUserDto;
         }
 
         [AllowAnonymous]
@@ -71,11 +73,10 @@ namespace HospitalApi.Controllers
                 }
             }
 
-            return new UserDto()
-            {
-                Username = user.Name,
-                Token = _tokenService.CreateToken(user)
-            };
+            var loginUserDto = _mapper.Map<UserDto>(user);
+            loginUserDto.Token = _tokenService.CreateToken(user);
+
+            return loginUserDto;
         }
 
         [AllowAnonymous]

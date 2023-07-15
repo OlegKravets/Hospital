@@ -12,6 +12,7 @@ namespace HospitalApi.Extensions
             services.AddCors();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<HospitalConnection, HospitalConnection>();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             return services;
         }

@@ -7,6 +7,7 @@ namespace HospitalApi.Repositories
 {
     public class HospitalRepository : RepositoryBase<Hospital>
     {
+        private const string HospitalIdParam = "@HospitalId";
         public HospitalRepository(HospitalConnection connection)
             : base(connection)
         {
@@ -30,6 +31,11 @@ namespace HospitalApi.Repositories
         public async Task<IEnumerable<Hospital>> GetHospitals()
         {
             return await GetData(HospitalScripts.SelectAllHospital);
+        }
+
+        public async Task<Hospital> GetHospitalById(int id)
+        {
+            return await GetFirstOrDefault(HospitalScripts.SelectHospitalById, new { HospitalIdParam, id } );
         }
     }
 }
