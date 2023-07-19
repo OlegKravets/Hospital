@@ -28,7 +28,7 @@
             placeholder="Age">
     </div>
 
-    <select class="form-select mb-3" [(ngModel)]="model.roleId">
+    <select class="form-select mb-3" [(ngModel)]="model.roleId" name="roleId">
         <option hidden value="">Select role</option>
         <option *ngFor="let role of roles" [value]="role.id">{{ role.roleName }}</option>
     </select>

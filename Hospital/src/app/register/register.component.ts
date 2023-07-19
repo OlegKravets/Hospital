@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AccountService } from '../services/account.service';
-import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { Role } from '../models/role';
 
 @Component({
   selector: 'app-register',
@@ -10,11 +11,11 @@ import { HttpClient } from '@angular/common/http';
 })
 export class RegisterComponent implements OnInit {
   @Output() cancelRegister = new EventEmitter();
-  model: any = {}
-  roles: any;
+  model: any = {};
+  roles: Role[] = [];
   validationErrors: string[] | undefined;
 
-  constructor(private accountService: AccountService, private router: Router, private http: HttpClient) {}
+  constructor(private accountService: AccountService, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.loadRoles();
@@ -23,12 +24,8 @@ export class RegisterComponent implements OnInit {
   register() {
     this.accountService.register(this.model)
       .subscribe({
-          next : () => {
-            this.router.navigateByUrl('/doctors');
-          },
-          error: error => {
-            this.validationErrors = error
-          }
+          next : _ => { this.cancelRegister.emit(false); },
+          error: error => { this.validationErrors = error }
       })
   }
 
@@ -38,10 +35,10 @@ export class RegisterComponent implements OnInit {
   }
 
   loadRoles() {
-    this.http.get("https://localhost:7240/api/Roles")
+    this.http.get<Role[]>(environment.apiUrl + "Roles")
     .subscribe(
       {
-        next: (response: any) => { this.roles = response; },
+        next: roles => { this.roles = roles; },
         error: (error: any) => { console.log(error); },
         complete: () => { console.log("Roles are received!"); }
       }

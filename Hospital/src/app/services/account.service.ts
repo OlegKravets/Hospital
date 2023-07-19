@@ -1,21 +1,23 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { User } from '../models/user';
+import { LogginUser } from '../models/logginUser';
 import { BehaviorSubject, map } from 'rxjs';
+import { environment } from 'src/environments/environment';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class AccountService {
-  baseUrl='https://localhost:7240/api/';
   private currentUserSource = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSource.asObservable();
 
   constructor(private http: HttpClient) { }
 
-  login(model: any)
+  login(model: LogginUser)
   {
-    return this.http.post<User>(this.baseUrl + 'account/login', model).pipe(
+    return this.http.post<User>(environment.apiUrlAccount + 'login', model).pipe(
       map((responce: User) => {
         const user = responce;
         if (user) {
@@ -27,8 +29,13 @@ export class AccountService {
 
   register (model: any)
   {
-    return this.http.post<User>(this.baseUrl + 'account/register', model)
-                    .pipe(map(user => { if (user) { this.setCurrentUser(user); } }))
+    return this.http.post<User>(environment.apiUrlAccount + 'register', model)
+                    .pipe(map(user =>
+                      {
+                        if (user) {
+                          this.setCurrentUser(user);
+                        }
+                      }))
   }
 
   setCurrentUser(user: User | null)

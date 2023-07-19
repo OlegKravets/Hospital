@@ -1,29 +1,22 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { UsersService } from '../services/users.service';
+import { User } from '../models/user';
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.css']
 })
+
 export class UsersComponent implements OnInit {
+  users: User[] = [];
 
-  users: any;
-
-  constructor(private http: HttpClient) {}
+  constructor(private usersService: UsersService) {}
 
   ngOnInit(): void {
-    this.getUsers();
-  }
-
-  getUsers()
-  {
-    this.http.get("https://localhost:7240/api/Users")
-    .subscribe(
-      {
-        next: (response: any) => { this.users = response; },
-        error: (error: any) => { console.log(error); },
-        complete: () => { console.log("Doctors are received!"); }
+    this.usersService.getUsers()
+      .subscribe({
+        next: users => this.users = users
       });
   }
 }

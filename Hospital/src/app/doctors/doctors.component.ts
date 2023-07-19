@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Doctor } from '../models/doctor';
+import { UsersService } from '../services/users.service';
 
 @Component({
   selector: 'app-doctors',
@@ -8,23 +9,12 @@ import { HttpClient } from '@angular/common/http';
 })
 
 export class DoctorsComponent implements OnInit{
-
-  doctors: any;
+  doctors: Doctor[] = [];
   
-  constructor(private http: HttpClient) {}
+  constructor(private userService: UsersService) {}
 
   ngOnInit(): void {
-    this.getUsers();
-  }
-
-  getUsers()
-  {
-    this.http.get("https://localhost:7240/api/Users/Doctors")
-    .subscribe(
-      {
-        next: (response: any) => { this.doctors = response; },
-        error: (error: any) => { console.log(error); },
-        complete: () => { console.log("Doctors are received!"); }
-      });
+    this.userService.getDoctors()
+    .subscribe({ next: (doctors: Doctor[]) => this.doctors = doctors });
   }
 }

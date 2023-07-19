@@ -32,7 +32,7 @@ namespace HospitalApi.Controllers
 
         [AllowAnonymous]
         [HttpGet("Doctors")]
-        public async Task<IActionResult> GetDoctors()
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetDoctors()
         {
             var result = new List<DoctorDto>();
             var doctors = await _userRepository.GetUserByRole("Doctor");
@@ -52,6 +52,13 @@ namespace HospitalApi.Controllers
         {
             await _userRepository.AddUser(user);
             return Ok();
+        }
+
+        [HttpGet("{username}")]
+        public async Task<ActionResult<UserDto>> GetUser(string userName)
+        {
+            User user = await _userRepository.GetUserByUsername(userName);
+            return _mapper.Map<UserDto>(user);
         }
     }
 }
