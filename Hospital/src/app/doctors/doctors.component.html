@@ -1,22 +1,7 @@
 <h1 style="text-align: center;color: green;">All doctors</h1>
 
-<table class="table table-dark">
-    <thead>
-      <tr>
-        <th scope="col">Username</th>
-        <th scope="col">Age</th>
-        <th scope="col">Salary</th>
-        <th scope="col">Hospital Name</th>
-        <th scope="col">Hospital Address</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let doctor of doctors">
-        <td>{{ doctor.name }}</td>
-        <td>{{ doctor.age }}</td>
-        <td>{{ doctor.salary }}</td>
-        <td>{{ doctor.hospitalName }}</td>
-        <td>{{ doctor.hospitalAddress }}</td>
-      </tr>
-    </tbody>
-  </table>
+<div class="row">
+  <div class="col-2" *ngFor="let doctor of doctors">
+    <app-doctor-card [currentDoctor]="doctor"></app-doctor-card>
+  </div>
+</div>

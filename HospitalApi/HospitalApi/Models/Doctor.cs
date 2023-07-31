@@ -1,10 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace HospitalApi.Models
+﻿namespace HospitalApi.Models
 {
     public class Doctor
     {
-        [Required]
         public int Id { get; set; }
 
         public string Name { get; set; }

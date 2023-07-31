@@ -1,4 +1,6 @@
-﻿namespace HospitalApi.DTOs
+﻿using API.Entities;
+
+namespace HospitalApi.DTOs
 {
     public class UserDto
     {
@@ -13,5 +15,7 @@
         public int HospitalId { get; set; }
 
         public string Token { get; set; }
+
+        public Photo Photo { get; set; }
     }
 }

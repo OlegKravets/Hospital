@@ -26,7 +26,7 @@ namespace HospitalApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsers()
         {
-            var users = await _userRepository.GetUsers();
+            var users = await _userRepository.GetUsers(true);
             return Ok(_mapper.Map<IEnumerable<UserDto>>(users));
         }
 

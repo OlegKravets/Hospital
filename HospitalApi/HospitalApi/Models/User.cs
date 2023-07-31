@@ -1,4 +1,6 @@
-﻿namespace HospitalApi.Models
+﻿using API.Entities;
+
+namespace HospitalApi.Models
 {
     public class User
     {
@@ -16,8 +18,12 @@
 
         public int HospitalId { get; set; }
 
+        public int PhotoId { get; set; }
+
         public List<UserRole> UserRoles { get; set; }
 
         public Hospital Hospital { get; set; }
+
+        public Photo Photo { get; set; }
     }
 }

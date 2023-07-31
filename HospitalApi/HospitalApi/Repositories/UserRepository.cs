@@ -1,6 +1,10 @@
-﻿using HospitalApi.Connection;
+﻿using API.Entities;
+using Dapper;
+using HospitalApi.Connection;
 using HospitalApi.Models;
 using HospitalApi.Scripts;
+using Microsoft.Data.SqlClient;
+using System.Data;
 
 namespace HospitalApi.Repositories
 {
@@ -43,7 +47,12 @@ namespace HospitalApi.Repositories
             }
         }
 
-        public async Task<IEnumerable<User>> GetUsers() => await GetData(UserScripts.SelectAllUser);
+        public async Task<IEnumerable<User>> GetUsers(bool hasPhoto)
+        {
+            return hasPhoto
+                ? await GetUsersWithPhoto(UserScripts.SelectAllUserWithPhoto)
+                : await GetData(UserScripts.SelectAllUser);
+        }
 
         public async Task<User> GetUserByUsername(string userName)
         {
@@ -57,7 +66,23 @@ namespace HospitalApi.Repositories
 
         public async Task<IEnumerable<User>> GetUserByRole(string role)
         {
-            return await GetData(UserScripts.SelectByRole, new { RoleParam, role });
+            return await GetUsersWithPhoto(UserScripts.SelectByRole, new { RoleParam, role });
+        }
+
+        private async Task<IEnumerable<User>> GetUsersWithPhoto(string sql, object param = null)
+        {
+            using (IDbConnection connection = new SqlConnection(Connection.ConnectionString))
+            {
+                return await connection.QueryAsync<User, Photo, User>(
+                    sql: sql,
+                    map: (user, photo) =>
+                    {
+                        user.Photo = photo;
+                        return user;
+                    },
+                    param: param,
+                    splitOn: nameof(User.PhotoId));
+            }
         }
     }
 }

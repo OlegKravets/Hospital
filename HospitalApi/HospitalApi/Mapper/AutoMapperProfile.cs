@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using API.Entities;
+using AutoMapper;
 using HospitalApi.DTOs;
 using HospitalApi.Models;
 
@@ -25,6 +26,8 @@ namespace HospitalApi.Mapper
                 });
 
             CreateMap<Role, RoleDto>();
+
+            CreateMap<Photo, PhotoDto>();
         }
     }
 }

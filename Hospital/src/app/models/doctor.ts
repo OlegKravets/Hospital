@@ -1,3 +1,5 @@
+import { Photo } from "./photo"
+
 export interface Doctor {
     id: number
     name: string
@@ -6,4 +8,5 @@ export interface Doctor {
     token: string
     hospitalName: number
     hospitalAddress: string
+    photo: Photo
 }

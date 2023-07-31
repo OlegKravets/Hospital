@@ -11,6 +11,7 @@ import { RegisterComponent } from './register/register.component';
 import { DoctorsComponent } from './doctors/doctors.component';
 import { ToastrModule } from 'ngx-toastr';
 import { UsersComponent } from './users/users.component';
+import { DoctorCardComponent } from './doctors/doctor-card/doctor-card.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { UsersComponent } from './users/users.component';
     HomeComponent,
     RegisterComponent,
     DoctorsComponent,
-    UsersComponent
+    UsersComponent,
+    DoctorCardComponent
   ],
   imports: [
     BrowserModule,
