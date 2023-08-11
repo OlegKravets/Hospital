@@ -26,7 +26,7 @@ namespace HospitalApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsers()
         {
-            var users = await _userRepository.GetUsers(true);
+            var users = await _userRepository.GetUsersWithPhoto();
             return Ok(_mapper.Map<IEnumerable<UserDto>>(users));
         }
 
@@ -57,7 +57,7 @@ namespace HospitalApi.Controllers
         [HttpGet("{username}")]
         public async Task<ActionResult<UserDto>> GetUser(string userName)
         {
-            User user = await _userRepository.GetUserByUsername(userName);
+            User user = await _userRepository.GetUserByUsernameWithPhoto(userName);
             return _mapper.Map<UserDto>(user);
         }
     }

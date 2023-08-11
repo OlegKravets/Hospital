@@ -62,7 +62,7 @@ namespace HospitalApi.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginModel)
         {
-            User user = await _userRepository.GetUserByUsername(loginModel.UserName);
+            User user = await _userRepository.GetUserByUsernameWithPhoto(loginModel.UserName);
 
             if (user is null)
             {

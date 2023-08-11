@@ -47,16 +47,25 @@ namespace HospitalApi.Repositories
             }
         }
 
-        public async Task<IEnumerable<User>> GetUsers(bool hasPhoto)
+        public async Task<IEnumerable<User>> GetUsers()
         {
-            return hasPhoto
-                ? await GetUsersWithPhoto(UserScripts.SelectAllUserWithPhoto)
-                : await GetData(UserScripts.SelectAllUser);
+            return await GetData(UserScripts.SelectAllUser);
+        }
+
+        public async Task<IEnumerable<User>> GetUsersWithPhoto()
+        {
+            return await GetUsersWithPhoto(UserScripts.SelectAllUserWithPhoto);
         }
 
         public async Task<User> GetUserByUsername(string userName)
         {
             return await GetFirstOrDefault(UserScripts.SelectByUsername, new { UsernameParam, userName });
+        }
+
+        public async Task<User> GetUserByUsernameWithPhoto(string userName)
+        {
+            var result = await GetUsersWithPhoto(UserScripts.SelectByUsernameWithPhoto, new { UsernameParam, userName });
+            return result.FirstOrDefault();
         }
 
         public async Task<bool> IsUserExist(string userName)
